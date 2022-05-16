@@ -1,5 +1,5 @@
 /**
- * tipos de variáveis:
+ * tipos de variï¿½veis:
  * var string = 'texto';
  * var numeric = numeros (inteiros, decimais) 10 ou 10.5
  * var bool = true ou false (verdadeiro ou falso)
@@ -27,6 +27,7 @@ function setup(){
 
   ground = createSprite(200, 180, 400, 10);
   ground.addImage("ground", groundImg);
+  ground.x = ground.width/2;
 }
 
 function draw(){
@@ -35,7 +36,15 @@ function draw(){
   if (keyDown("space")) {
     trex.velocityY = -10;
   }
+  if (ground.x < 0) {
+    ground.x = ground.width/2;
+  }
+  ground.velocityX = -4; 
   trex.velocityY = trex.velocityY +0.5;
   trex.collide(edges[3]);
+  
+  
+  
+  
   drawSprites();
 }
