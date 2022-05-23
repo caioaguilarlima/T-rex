@@ -37,8 +37,8 @@ function setup(){
 function draw(){
   background("black");
 
-  // adicionar condição corrigir pulo duplicado
-  if (keyDown("space")) {
+  // adicionar condiï¿½ï¿½o corrigir pulo duplicado
+  if (keyDown("space") && trex.y >= 150) {
     trex.velocityY = -10;
   }
   if (ground.x < 0) {
@@ -56,7 +56,13 @@ function draw(){
 
 function createClouds()
 {
-  cloud = createSprite(600, 100, 40, 10);
-  cloud.velocityX = -3;
-
+ 
+  if (frameCount % 60 == 0) {
+    var randNumber = Math.round(random(10, 60));
+    cloud = createSprite(600, 100, 40, 10);
+    cloud.addImage(cloudImg);
+    cloud.velocityX = -3;
+    cloud.y = randNumber;
+    cloud.scale = 0.4; 
+  }
 }
