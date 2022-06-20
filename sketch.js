@@ -12,6 +12,7 @@ var ground, groundImg, invisibleGround;
 var cloud, cloudImg;
 var cacto1, cacto2, cacto3, cacto4, cacto5, cacto6;
 var cactoGroup, cloudGroup;
+var score = 0;
 
 
 function preload(){
@@ -48,7 +49,8 @@ function setup(){
 
 function draw(){
   background("black");
-
+  text("score: "+ score, 500, 50);
+  score += Math.round(frameCount / 60);
   // adicionar condi��o corrigir pulo duplicado
   if (keyDown("space") && trex.y >= 150) {
     trex.velocityY = -10;
@@ -75,9 +77,10 @@ function createClouds()
     cloud.velocityX = -3;
     cloud.y = randNumber;
     cloud.scale = 0.4; 
+    cloud.lifetime = 200;
   }
-}
 
+}
 function createCactos()
 {
   if (frameCount % 60 == 0) {
@@ -90,8 +93,17 @@ function createCactos()
         break;
       case 2: cacto.addImage(cacto2);
         break;
+      case 3: cacto.addImage(cacto3);
+        break;
+      case 4: cacto.addImage(cacto4);
+        break; 
+      case 5: cacto.addImage(cacto5);
+        break;
+      case 6: cacto.addImage(cacto6);
+        break;
     }
-
+    cacto.scale = 0.5;
+    cacto.lifetime = 150;
     cactoGroup.add(cacto);
   }
 }
