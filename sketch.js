@@ -10,12 +10,21 @@
 var trex, trex_running;
 var ground, groundImg, invisibleGround;
 var cloud, cloudImg;
+var cacto1, cacto2, cacto3, cacto4, cacto5, cacto6;
+var cactoGroup, cloudGroup;
 
 
 function preload(){
   trex_running = loadAnimation("trex1.png", "trex3.png", "trex4.png");
   groundImg = loadImage("ground2.png");
   cloudImg = loadImage("cloud.png");
+
+  cacto1 = loadImage("obstacle1.png");
+  cacto2 = loadImage("obstacle2.png");
+  cacto3 = loadImage("obstacle3.png");
+  cacto4 = loadImage("obstacle4.png");
+  cacto5 = loadImage("obstacle5.png");
+  cacto6 = loadImage("obstacle6.png");
 }
 
 function setup(){
@@ -32,6 +41,9 @@ function setup(){
 
   invisibleGround = createSprite(200, 190, 400, 10);
   invisibleGround.visible = false;
+
+  cactoGroup = new Group();
+  cloudGroup = new Group();
 }
 
 function draw(){
@@ -49,20 +61,37 @@ function draw(){
   trex.collide(invisibleGround);
   
   createClouds();
-  
+  createCactos();
   
   drawSprites();
 }
 
 function createClouds()
 {
- 
-  if (frameCount % 60 == 0) {
+  if (frameCount % 60 == 0) { // ele cria o espaço entre uma nuvem e outra
     var randNumber = Math.round(random(10, 60));
     cloud = createSprite(600, 100, 40, 10);
     cloud.addImage(cloudImg);
     cloud.velocityX = -3;
     cloud.y = randNumber;
     cloud.scale = 0.4; 
+  }
+}
+
+function createCactos()
+{
+  if (frameCount % 60 == 0) {
+    var cacto = createSprite(600, 165, 10, 40);
+    cacto.velocityX = -6;
+    var randNumber = Math.round(random(1, 6));
+
+    switch (randNumber) {
+      case 1: cacto.addImage(cacto1);
+        break;
+      case 2: cacto.addImage(cacto2);
+        break;
+    }
+
+    cactoGroup.add(cacto);
   }
 }
