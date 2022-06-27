@@ -13,7 +13,9 @@ var cloud, cloudImg;
 var cacto1, cacto2, cacto3, cacto4, cacto5, cacto6;
 var cactoGroup, cloudGroup;
 var score = 0;
-
+const PLAY = 1;
+const END = 0;
+var gameState = PLAY;
 
 function preload(){
   trex_running = loadAnimation("trex1.png", "trex3.png", "trex4.png");
@@ -51,20 +53,37 @@ function draw(){
   background("black");
   text("score: "+ score, 500, 50);
   score += Math.round(frameCount / 60);
-  // adicionar condi��o corrigir pulo duplicado
-  if (keyDown("space") && trex.y >= 150) {
-    trex.velocityY = -10;
+
+  if (gameState === PLAY){
+    // jogando
+    // adicionar condicao corrigir pulo duplicado
+    if (keyDown("space") && trex.y >= 150) {
+      trex.velocityY = -10;
+    }
+
+    if (ground.x < 0) {
+      ground.x = ground.width/2;
+    }
+
+    // faz o chao andar
+    ground.velocityX = -4; 
+
+    // efeito da gravidade
+    trex.velocityY = trex.velocityY +0.5;
+
+    trex.collide(invisibleGround);
+    createClouds();
+    createCactos();
+
+    if (cactoGroup.isTouching(trex)) {
+      gameState = END;
+    }
+
+  } else if (gameState === END) {
+    // game over
+    ground.velocityX = 0;
   }
-  if (ground.x < 0) {
-    ground.x = ground.width/2;
-  }
-  ground.velocityX = -4; 
-  trex.velocityY = trex.velocityY +0.5;
-  trex.collide(invisibleGround);
-  
-  createClouds();
-  createCactos();
-  
+
   drawSprites();
 }
 
@@ -79,8 +98,8 @@ function createClouds()
     cloud.scale = 0.4; 
     cloud.lifetime = 200;
   }
-
 }
+
 function createCactos()
 {
   if (frameCount % 60 == 0) {
@@ -102,6 +121,7 @@ function createCactos()
       case 6: cacto.addImage(cacto6);
         break;
     }
+
     cacto.scale = 0.5;
     cacto.lifetime = 150;
     cactoGroup.add(cacto);
