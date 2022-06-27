@@ -7,11 +7,12 @@
  */
 
 
-var trex, trex_running;
+var trex, trex_running, trex_collided;
 var ground, groundImg, invisibleGround;
 var cloud, cloudImg;
 var cacto1, cacto2, cacto3, cacto4, cacto5, cacto6;
 var cactoGroup, cloudGroup;
+var restart, restartImg, gameOver, gameOverImg;
 var score = 0;
 const PLAY = 1;
 const END = 0;
@@ -19,6 +20,7 @@ var gameState = PLAY;
 
 function preload(){
   trex_running = loadAnimation("trex1.png", "trex3.png", "trex4.png");
+  trex_collided = loadAnimation("trex_collided.png");
   groundImg = loadImage("ground2.png");
   cloudImg = loadImage("cloud.png");
 
@@ -36,6 +38,7 @@ function setup(){
   //crie um sprite de trex
   trex = createSprite(50, 160, 20, 50);
   trex.addAnimation("running", trex_running);
+  trex.addAnimation("collided", trex_collided);
   trex.scale = 0.5;
 
   ground = createSprite(200, 180, 400, 10);
@@ -71,7 +74,6 @@ function draw(){
     // efeito da gravidade
     trex.velocityY = trex.velocityY +0.5;
 
-    trex.collide(invisibleGround);
     createClouds();
     createCactos();
 
@@ -82,11 +84,21 @@ function draw(){
   } else if (gameState === END) {
     // game over
     ground.velocityX = 0;
+    trex.changeAnimation("collided");
     cloudGroup.setVelocityXEach(0);
     cactoGroup.setVelocityXEach(0);
+
+    cloudGroup.setLifetimeEach(-1);
+    cactoGroup.setLifetimeEach(-1);
   }
 
+  trex.collide(invisibleGround);
   drawSprites();
+}
+
+function reset()
+{
+
 }
 
 function createClouds()
