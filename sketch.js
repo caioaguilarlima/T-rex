@@ -82,6 +82,8 @@ function draw(){
   } else if (gameState === END) {
     // game over
     ground.velocityX = 0;
+    cloudGroup.setVelocityXEach(0);
+    cactoGroup.setVelocityXEach(0);
   }
 
   drawSprites();
@@ -97,6 +99,7 @@ function createClouds()
     cloud.y = randNumber;
     cloud.scale = 0.4; 
     cloud.lifetime = 200;
+    cloudGroup.add(cloud);
   }
 }
 
