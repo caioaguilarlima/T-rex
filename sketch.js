@@ -30,6 +30,9 @@ function preload(){
   cacto4 = loadImage("obstacle4.png");
   cacto5 = loadImage("obstacle5.png");
   cacto6 = loadImage("obstacle6.png");
+
+  restartImg = loadImage("restart.png");
+  gameOverImg = loadImage("gameOver.png");
 }
 
 function setup(){
@@ -50,6 +53,14 @@ function setup(){
 
   cactoGroup = new Group();
   cloudGroup = new Group();
+
+  restart = createSprite(300, 100);
+  restart.addImage(restartImg);
+  restart.scale = 0.5;
+  gameOver = createSprite(300, 100);
+  gameOver.addImage(gameOverImg);
+  restart.visible = false;
+  gameOver.visible = false;
 }
 
 function draw(){
@@ -90,7 +101,14 @@ function draw(){
 
     cloudGroup.setLifetimeEach(-1);
     cactoGroup.setLifetimeEach(-1);
+
+    restart.visible = true;
+    gameOver.visible = true;
+    if (mousePressedOver(restart)) {
+      reset();
+    }
   }
+    
 
   trex.collide(invisibleGround);
   drawSprites();
@@ -98,7 +116,7 @@ function draw(){
 
 function reset()
 {
-
+  console.log("Funcionou")
 }
 
 function createClouds()
