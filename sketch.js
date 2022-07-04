@@ -17,6 +17,7 @@ var score = 0;
 const PLAY = 1;
 const END = 0;
 var gameState = PLAY;
+var dieSound, jumpSound, checkSound;
 
 function preload(){
   trex_running = loadAnimation("trex1.png", "trex3.png", "trex4.png");
@@ -33,6 +34,10 @@ function preload(){
 
   restartImg = loadImage("restart.png");
   gameOverImg = loadImage("gameOver.png");
+
+  dieSound = loadSound("collided.wav");
+  jumpSound = loadSound("jump.mp3");
+  checkSound = loadSound("checkpoint.wav");
 }
 
 function setup(){
@@ -59,20 +64,29 @@ function setup(){
   restart.scale = 0.5;
   gameOver = createSprite(300, 100);
   gameOver.addImage(gameOverImg);
-  restart.visible = false;
-  gameOver.visible = false;
+  
 }
 
 function draw(){
   background("black");
   text("score: "+ score, 500, 50);
-  score += Math.round(frameCount / 60);
+
 
   if (gameState === PLAY){
     // jogando
+    trex.changeAnimation("running");
+    restart.visible = false;
+    gameOver.visible = false;
+    score += Math.round(frameRate() / 60);
+
     // adicionar condicao corrigir pulo duplicado
     if (keyDown("space") && trex.y >= 150) {
       trex.velocityY = -10;
+      jumpSound.play();
+    }
+
+    if (score > 0 && score % 100 === 0) {
+      checkSound.play();
     }
 
     if (ground.x < 0) {
@@ -90,6 +104,7 @@ function draw(){
 
     if (cactoGroup.isTouching(trex)) {
       gameState = END;
+      dieSound.play();
     }
 
   } else if (gameState === END) {
@@ -116,7 +131,10 @@ function draw(){
 
 function reset()
 {
-  console.log("Funcionou")
+  gameState = PLAY;
+  cloudGroup.destroyEach();
+  cactoGroup.destroyEach();
+  score = 0;
 }
 
 function createClouds()
