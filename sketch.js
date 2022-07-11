@@ -41,7 +41,7 @@ function preload(){
 }
 
 function setup(){
-  createCanvas(600,200);
+  createCanvas(windowWidth,windowHeight);
 
   //crie um sprite de trex
   trex = createSprite(50, 160, 20, 50);
@@ -59,17 +59,17 @@ function setup(){
   cactoGroup = new Group();
   cloudGroup = new Group();
 
-  restart = createSprite(300, 100);
+  restart = createSprite(width/2, 150);
   restart.addImage(restartImg);
   restart.scale = 0.5;
-  gameOver = createSprite(300, 100);
+  gameOver = createSprite(width/2, 100);
   gameOver.addImage(gameOverImg);
   
 }
 
 function draw(){
   background("black");
-  text("score: "+ score, 500, 50);
+  text("score: "+ score, width - 100, 50);
 
 
   if (gameState === PLAY){
@@ -80,9 +80,10 @@ function draw(){
     score += Math.round(frameRate() / 60);
 
     // adicionar condicao corrigir pulo duplicado
-    if (keyDown("space") && trex.y >= 150) {
+    if (keyDown("space") && trex.y >= 150 || touches.length > 0) {
       trex.velocityY = -10;
       jumpSound.play();
+      touches = [];
     }
 
     if (score > 0 && score % 100 === 0) {
@@ -141,12 +142,12 @@ function createClouds()
 {
   if (frameCount % 60 == 0) { // ele cria o espaço entre uma nuvem e outra
     var randNumber = Math.round(random(10, 60));
-    cloud = createSprite(600, 100, 40, 10);
+    cloud = createSprite(width, 100, 40, 10);
     cloud.addImage(cloudImg);
     cloud.velocityX = -3;
     cloud.y = randNumber;
     cloud.scale = 0.4; 
-    cloud.lifetime = 200;
+    cloud.lifetime = width/3;
     cloudGroup.add(cloud);
   }
 }
@@ -154,7 +155,7 @@ function createClouds()
 function createCactos()
 {
   if (frameCount % 60 == 0) {
-    var cacto = createSprite(600, 165, 10, 40);
+    var cacto = createSprite(width, 165, 10, 40);
     cacto.velocityX = -6;
     var randNumber = Math.round(random(1, 6));
 
@@ -174,7 +175,7 @@ function createCactos()
     }
 
     cacto.scale = 0.5;
-    cacto.lifetime = 150;
+    cacto.lifetime = width/3;
     cactoGroup.add(cacto);
   }
 }
